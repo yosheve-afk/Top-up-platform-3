@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robuxo – Top-Up Robux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="coin" aria-hidden="true">R$</span><span>Robuxo</span></div>
+  <p class="tag">Top-up cepat, aman, tanpa ribet.</p>
+</header>
+
+<main class="stage">
+  <!-- STATE 1: CHECKOUT -->
+  <section id="view-checkout" class="view is-active">
+    <div class="panel form-panel">
+      <h1>Isi Robux kamu</h1>
+
+      <div class="tabs" role="tablist" aria-label="Metode top-up">
+        <button class="tab is-active" role="tab" data-method="username" aria-selected="true">Username</button>
+        <button class="tab" role="tab" data-method="gamepass" aria-selected="false">Gamepass</button>
+        <button class="tab" role="tab" data-method="login" aria-selected="false">Login</button>
+      </div>
+
+      <form id="order-form" novalidate>
+        <div class="fields" data-for="username">
+          <label class="field"><span>Username Roblox</span>
+            <input name="username" type="text" placeholder="contoh: BloxyBuddy123" autocomplete="off"></label>
+        </div>
+        <div class="fields" data-for="gamepass" hidden>
+          <label class="field"><span>Username Roblox</span>
+            <input name="gp_username" type="text" placeholder="contoh: BloxyBuddy123" autocomplete="off"></label>
+          <label class="field"><span>Link Gamepass</span>
+            <input name="gp_url" type="url" placeholder="https://www.roblox.com/game-pass/..." autocomplete="off"></label>
+        </div>
+        <div class="fields" data-for="login" hidden>
+          <div class="notice"><strong>Info keamanan.</strong> Data login hanya dipakai satu kali untuk pesanan ini dan dihapus setelah selesai. Kami tidak pernah meminta kode OTP lewat chat. Aktifkan 2-Step Verification dan siapkan Backup Code.</div>
+          <label class="field"><span>Username Roblox</span>
+            <input name="l_username" type="text" autocomplete="off"></label>
+          <label class="field"><span>Password</span>
+            <input name="l_password" type="password" autocomplete="new-password"></label>
+          <label class="field"><span>Backup Codes</span>
+            <textarea name="l_codes" rows="2" placeholder="Pisahkan dengan koma atau baris baru"></textarea></label>
+        </div>
+
+        <h2>Pilih paket</h2>
+        <div class="grid" id="packs"></div>
+        <p class="error" id="form-error" role="alert" hidden></p>
+      </form>
+    </div>
+
+    <aside class="panel summary">
+      <h2>Ringkasan</h2>
+      <dl>
+        <div><dt>Metode</dt><dd id="s-method">Username</dd></div>
+        <div><dt>Paket</dt><dd id="s-pack">Belum dipilih</dd></div>
+        <div class="total"><dt>Total</dt><dd id="s-total">Rp 0</dd></div>
+      </dl>
+      <button class="chunky" id="order-btn" type="submit" form="order-form">Order Now</button>
+    </aside>
+  </section>
+
+  <!-- STATE 2: PAYMENT -->
+  <section id="view-payment" class="view">
+    <div class="panel center">
+      <h1>Scan untuk bayar</h1>
+      <p class="muted">Pesanan <b id="p-id"></b> · <span id="p-total"></span></p>
+      <div class="qr-frame"><div id="qr"></div></div>
+      <p class="timer">Berlaku <b id="timer">15:00</b></p>
+      <button class="chunky" id="paid-btn">Simulate User Paid</button>
+      <button class="ghost" id="cancel-btn">Batalkan pesanan</button>
+    </div>
+  </section>
+
+  <!-- STATE 3: PROCESSING -->
+  <section id="view-processing" class="view">
+    <div class="panel center">
+      <div class="spinner" aria-hidden="true"><span class="coin">R$</span></div>
+      <h1>Pesanan sedang diproses...</h1>
+      <p class="muted">Admin sedang mengirim Robux ke akun kamu. Jangan tutup halaman ini.</p>
+    </div>
+  </section>
+
+  <!-- STATE 4: SUCCESS -->
+  <section id="view-success" class="view">
+    <div class="panel center success">
+      <div class="burst" aria-hidden="true"><span class="coin big">R$</span></div>
+      <h1>Success: Robux Delivered</h1>
+      <p class="muted" id="done-text"></p>
+      <button class="chunky" id="again-btn">Top-up lagi</button>
+    </div>
+  </section>
+</main>
+
+<!-- ADMIN DEBUG PANEL -->
+<aside class="admin" id="admin" aria-label="Admin debug panel">
+  <button class="admin-head" id="admin-toggle" aria-expanded="true">
+    <span>Admin Debug</span><span class="badge" id="admin-badge" hidden>1</span>
+  </button>
+  <div class="admin-body" id="admin-body">
+    <p class="admin-empty" id="admin-empty">Belum ada pesanan masuk.</p>
+    <div class="admin-note" id="admin-note" hidden>
+      <b>New Top-Up Order Pending</b>
+      <span id="admin-detail"></span>
+      <button id="approve-btn">Admin: Send Robux &amp; Approve Order</button>
+    </div>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>
