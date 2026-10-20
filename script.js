@@ -41,6 +41,15 @@ const PACKS = [
   { robux: 5000, price: 625000, flag: 'Hemat' },
 ];
 const METHODS = { username: 'Username', gamepass: 'Gamepass', login: 'Login' };
+
+const LEADERBOARD_DATA = [
+  { name: 'PlayerOne', robux: 50000 },
+  { name: 'GamerPro99', robux: 42000 },
+  { name: 'RobloxKing', robux: 38500 },
+  { name: 'BloxMaster', robux: 31000 },
+  { name: 'TopPlayer2024', robux: 27500 },
+];
+
 const rp = n => 'Rp ' + n.toLocaleString('id-ID');
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -57,6 +66,43 @@ function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(toast.id); toast.id = setTimeout(() => t.classList.remove('show'), 2400);
 }
+
+/* ============ LEADERBOARD ============ */
+function renderLeaderboard() {
+  const container = $('#leaderboard-list');
+  container.innerHTML = LEADERBOARD_DATA.map((player, i) => `
+    <div class="leaderboard-item">
+      <div class="leaderboard-rank">${i + 1}</div>
+      <div class="leaderboard-info">
+        <div class="leaderboard-name">${player.name}</div>
+        <div class="leaderboard-amount">${player.robux.toLocaleString('id-ID')} R$</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============ GUIDE MODAL ============ */
+const modal = $('#guide-modal');
+$('#guide-btn').addEventListener('click', () => {
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeModal() {
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+$('#modal-close').addEventListener('click', closeModal);
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+});
 
 /* ============ STATE 1: CHECKOUT ============ */
 $('#packs').innerHTML = PACKS.map((p, i) => `
@@ -189,4 +235,6 @@ $('#admin-toggle').addEventListener('click', () => {
   $('#admin-toggle').setAttribute('aria-expanded', !closed);
 });
 
+/* ============ INITIALIZATION ============ */
 renderSummary();
+renderLeaderboard();
